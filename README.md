@@ -1,7 +1,6 @@
 # Stankless-Server
 Server Logic for use with the Stankless TrashCAN
 
-
 ### Setting Up Flask
 
 You will need Python 3 to set up Flask properly. You may also need to install the Python 3 virtual environment package with `sudo apt install python3-venv`.
@@ -22,3 +21,4 @@ source ~/.bashrc
 ```
 
 Replacing `path/to/server.py` to wherever the actual file is. The flask server can now be run with `flask run`.
+To run on a public-facing server, run it with `flask run --host=0.0.0.0`
