@@ -19,7 +19,7 @@ def grocery_list():
 @app.route('/query-test')
 def query_test():
 	message = request.args.get('msg') # If the key does not exists, returns None
-	
+
 	return '''<h1>Your message is: {}</h1>'''.format(message)
 
 # Testing GET and POST requests
@@ -38,6 +38,17 @@ def form_example():
                   <input type="submit" value="Submit"><br>
               </form>'''
 
+# Update the listing for the raspberry pi IP
+@app.route('/update-ip', methods=['POST'])
+def update_ip():
+    # Get the IP data from the json string
+    data = request.get_json()
+    new_ip = data['ip']
+
+    # TODO: update a value in the database with the IP string
+
+    return "New IP: {}".format(new_ip)
+
 # Test JSON requests.
 # If testing with Postman make sure to select JSON (application/json) encoding, not just raw text
 @app.route('/json-test', methods=['POST']) #GET requests will be blocked
@@ -49,8 +60,8 @@ def json_example():
 
     # Build response
     return '''
-           Hello, {}!
-           You are {} years old.
-           You have a job as a {}.
-           Look at how cool you are!
+Hello, {}!
+You are {} years old.
+You have a job as a {}.
+Look at how cool you are!
            '''.format(name, age, occupation)
