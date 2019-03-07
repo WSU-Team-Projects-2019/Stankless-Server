@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import request
+import barcode
+
 app = Flask(__name__)
 
 # Application routes determine the functions to call when the user tries to access a particular URL
@@ -21,6 +23,20 @@ def query_test():
 	message = request.args.get('msg') # If the key does not exists, returns None
 	
 	return '''<h1>Your message is: {}</h1>'''.format(message)
+
+# Look up barcode
+@app.route('/barcode-lookup')
+def barcode_query():
+    message = request.args.get('upc') # If the key does not exists, returns None
+    upc_req = barcode.barcode_lookup(message)
+	
+    return upc_req
+
+# Test requesting barcode data from upcitemdb
+@app.route('/barcode-test')
+def barcode_test():
+    mac = barcode.macaroni()
+    return mac
 
 # Testing GET and POST requests
 @app.route('/form-test', methods=['GET', 'POST']) #allow both GET and POST requests
