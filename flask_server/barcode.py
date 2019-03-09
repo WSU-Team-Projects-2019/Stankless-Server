@@ -14,10 +14,17 @@ def barcode_lookup(barcode):
     lookup = urlparse(url)
     resp, content = ch.request(lookup.geturl(), 'GET', '', headers)
     data = json.loads(content)
-    value = json.dumps(data)
+    #value = json.dumps(data)
+
+    if resp['status'] == "200":
+        title = data['items'][0]['title']
+        barcode = data['items'][0]['ean']
+        return {"response": resp['status'], "barcode" : barcode, "title" : title}
+
+    #print("\n\nTitle is: {}\nBarcode: is {}\n\n".format(title, barcode))
     
 
-    return value
+    return {"response": "Barcode not found!"}
 
 # Returns macaroni
 def macaroni():
@@ -29,7 +36,12 @@ def macaroni():
     lookup = urlparse('https://api.upcitemdb.com/prod/trial/lookup?upc=021000658947')
     resp, content = ch.request(lookup.geturl(), 'GET', '', headers)
     data = json.loads(content)
-    value = json.dumps(data)
+    #value = json.dumps(data)
+
+    title = data['items'][0]['title']
+    barcode = data['items'][0]['ean']
+
+    #print("\n\nTitle is: {}\nBarcode: is {}\n\n".format(title, barcode))
     
 
-    return value
+    return {"response" : resp['status'], "barcode" : barcode, "title" : title}
