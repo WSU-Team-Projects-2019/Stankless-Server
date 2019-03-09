@@ -29,14 +29,15 @@ def query_test():
 def barcode_query():
     message = request.args.get('upc') # If the key does not exists, returns None
     upc_req = barcode.barcode_lookup(message)
-	
-    return upc_req
+    if upc_req['response'] == "200":
+        return '''Item Name: {} EAN: {} Response is: {}'''.format(upc_req['title'], upc_req['barcode'], upc_req['response'])
+    return '''Barcode not found!'''
 
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')
 def barcode_test():
     mac = barcode.macaroni()
-    return mac
+    return '''Response is: {}'''.format(mac['response'])
 
 # Testing GET and POST requests
 @app.route('/form-test', methods=['GET', 'POST']) #allow both GET and POST requests
