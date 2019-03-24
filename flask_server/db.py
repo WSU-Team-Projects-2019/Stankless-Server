@@ -9,7 +9,12 @@ def insert_barcode(title, barcode):
     cursor = db.cursor()
 
     # execute SQL query using execute() method.
-    cursor.execute("INSERT INTO barcodes (title, number, count) VALUES (\"{}\", \"{}\", 0);".format(title, barcode))
+    query = "INSERT INTO barcodes (title, number, count) VALUES (%s, %s, 0)"
+    values = (title, barcode)
+    cursor.execute(query, values)
+
+    # Commit the changes
+    db.commit()
 
     # Fetch a single row using fetchone() method.
     data = cursor.fetchone()
