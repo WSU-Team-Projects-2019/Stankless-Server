@@ -1,6 +1,6 @@
 import MySQLdb
 
-def connect():
+def insert_barcode(title, barcode):
     # Open database connection
     # Arguments are: host, username, password, database name
     db = MySQLdb.connect("localhost","root","root","test_stankless" )
@@ -9,11 +9,11 @@ def connect():
     cursor = db.cursor()
 
     # execute SQL query using execute() method.
-    cursor.execute("SELECT VERSION()")
+    cursor.execute("INSERT INTO barcodes (title, number, count) VALUES (\"{}\", \"{}\", 0);".format(title, barcode))
 
     # Fetch a single row using fetchone() method.
     data = cursor.fetchone()
-    print("Database version : %s " % data)
+    print("MySQL Response : %s " % data)
 
     # disconnect from server
     db.close()

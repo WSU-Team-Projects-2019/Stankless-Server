@@ -31,10 +31,10 @@ def query_test():
 # Look up barcode
 @app.route('/barcode-lookup')
 def barcode_query():
-    db.connect()
     message = request.args.get('upc') # If the key does not exists, returns None
     upc_req = barcode.barcode_lookup(message)
     if upc_req['response'] == "200":
+        db.insert_barcode(upc_req['title'], upc_req['barcode'])
         return '''Item Name: {} EAN: {} Response is: {}'''.format(upc_req['title'], upc_req['barcode'], upc_req['response'])
     return '''Barcode not found!'''
 

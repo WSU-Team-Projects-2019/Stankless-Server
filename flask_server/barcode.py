@@ -18,7 +18,7 @@ def barcode_lookup(barcode):
 
     if resp['status'] == "200":
         title = data['items'][0]['title']
-        barcode = data['items'][0]['ean']
+        barcode = data['items'][0]['ean'][1:]
         return {"response": resp['status'], "barcode" : barcode, "title" : title}
 
     #print("\n\nTitle is: {}\nBarcode: is {}\n\n".format(title, barcode))
