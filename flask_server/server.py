@@ -1,6 +1,10 @@
 from flask import Flask
 from flask import request
+import MySQLdb
+
 import barcode
+import db
+
 
 app = Flask(__name__)
 
@@ -27,6 +31,7 @@ def query_test():
 # Look up barcode
 @app.route('/barcode-lookup')
 def barcode_query():
+    db.connect()
     message = request.args.get('upc') # If the key does not exists, returns None
     upc_req = barcode.barcode_lookup(message)
     if upc_req['response'] == "200":
