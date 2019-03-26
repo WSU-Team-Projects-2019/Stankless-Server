@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 import MySQLdb
+import json
 
 import barcode
 import db
@@ -17,9 +18,16 @@ def server_init():
 def weight():
 	return 'TrashCAN weight'
 
+# Returns list of items in the data base
 @app.route('/grocerylist')
 def grocery_list():
-	return 'TrashCAN grocery list'
+    codes = db.get_barcodes()
+
+    # Start of dictionary
+    items = []
+    for item in codes:
+        items.append({"title" : item[1], "barcode" : item[2], "count" : item[3]})
+    return json.dumps(items)
 
 # Test simple query
 @app.route('/query-test')
