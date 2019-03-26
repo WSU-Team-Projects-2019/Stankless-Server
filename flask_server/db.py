@@ -1,9 +1,9 @@
 import MySQLdb
 
+# Inserts item into the database with given title and barcode
+# If the item already exists, the count of the item is increased
 def insert_barcode(title, barcode):
-    # Open database connection
-    # Arguments are: host, username, password, database name
-    db = MySQLdb.connect("localhost","root","root","test_stankless" )
+    db = getDB()
 
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
@@ -31,3 +31,18 @@ def insert_barcode(title, barcode):
 
     # disconnect from server
     db.close()
+
+# Pulls down all of the barcodes from the database.
+def get_barcodes():
+    db = getDB()
+    cursor = db.cursor()
+    query = "SELECT * FROM barcodes;"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
+
+
+# Get database connection
+def getDB():
+    # Arguments are: host, username, password, database name
+    return MySQLdb.connect("localhost","root","root","test_stankless" )
