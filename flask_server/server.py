@@ -29,6 +29,15 @@ def grocery_list():
         items.append({"title" : item[1], "barcode" : item[2], "count" : item[3]})
     return json.dumps(items)
 
+
+# Returns status of trash can
+@app.route('/get-can-status')
+def can_status():
+    status = db.get_can_status()[0]
+
+    json_status = {"lid_status" : status[0], "fan_status" : status[1], "led_status" : status[2], "bulb_status" : status[3]}
+    return json.dumps(json_status)
+
 # Test simple query
 @app.route('/query-test')
 def query_test():
@@ -45,6 +54,45 @@ def barcode_query():
         db.insert_barcode(upc_req['title'], upc_req['barcode'])
         return '''Item Name: {} EAN: {} Response is: {}'''.format(upc_req['title'], upc_req['barcode'], upc_req['response'])
     return '''Barcode not found!'''
+
+# Update the can status
+@app.route('/update-status')
+def update_status():
+    # Get all keys from arguments in the URL
+    lid = request.args.get('lid') # If the key does not exists, returns None
+    fan = request.args.get('fan')
+    led = request.args.get('led')
+    bulb = request.args.get('bulb')
+
+    # Start building query
+    query = 'UPDATE status SET'
+
+    num_arguments = 0
+
+    # Convert the keys to integers
+    if lid == '1' or lid == '0':
+        lid = int(lid)
+        query += " lid_status = {},".format(lid)
+        num_arguments += 1
+    if fan == '1' or fan == '0':
+        fan = int(fan)
+        query += " fan_status = {},".format(fan)
+        num_arguments += 1
+    if led == '1' or led == '0':
+        led = int(led)
+        query += " led_status = {},".format(led)
+        num_arguments += 1
+    if bulb == '1' or bulb == '0':
+        bulb = int(bulb)
+        query += "bulb_status = {}".format(bulb)
+    elif num_arguments > 0: # If we get to here and bulb status was not included and we have an argument, remove the last comma to insert properly
+        query = query[:-1]
+    
+    if query != 'UPDATE status SET':
+        query += " WHERE can_id = 'X';"
+        db.update_can_status(query)
+        
+    return '''Can status updated!\n\nLid : {}\nFan: {}\nLED: {}\nBulb: {}'''.format(lid, fan, led, bulb)
 
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')

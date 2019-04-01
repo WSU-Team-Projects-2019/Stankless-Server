@@ -18,7 +18,7 @@ def insert_barcode(title, barcode):
     data = cursor.fetchone()
     query = "INSERT INTO barcodes (title, number, count) VALUES (\'{}\', \'{}\', {});".format(title, barcode, count)
     if data != None: # If barcode already exists in the database
-        print("Got to here! Values are ({}, {})".format(data[0], data[1]))
+        # print("Got to here! Values are ({}, {})".format(data[0], data[1]))
         item_id = data[0] # Store values from the returned tuple
         count = data[1] + 1
         query = "UPDATE barcodes SET count = {} WHERE item_id = {}".format(count, item_id)
@@ -41,6 +41,25 @@ def get_barcodes():
     data = cursor.fetchall()
     return data
 
+# pulls down trash can status and returns it as JSON string
+def get_can_status():
+    db = getDB()
+    cursor = db.cursor()
+    query = "SELECT lid_status, fan_status, led_status, bulb_status FROM status WHERE can_id = 'X'"
+    cursor.execute(query)
+    data = cursor.fetchall()
+
+    return data
+
+# updates the can status on the server with the given query
+def update_can_status(query):
+    db = getDB()
+    cursor = db.cursor()
+    cursor.execute(query)
+    db.commit()
+    data = cursor.fetchall()
+
+    return data
 
 # Get database connection
 def getDB():
