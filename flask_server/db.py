@@ -51,6 +51,15 @@ def get_can_status():
 
     return data
 
+# updates the can status on the server with the given query
+def update_can_status(query):
+    db = getDB()
+    cursor = db.cursor()
+    cursor.execute(query)
+    db.commit()
+    data = cursor.fetchall()
+
+    return data
 
 # Get database connection
 def getDB():
