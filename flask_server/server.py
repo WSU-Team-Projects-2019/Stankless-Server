@@ -29,6 +29,15 @@ def grocery_list():
         items.append({"title" : item[1], "barcode" : item[2], "count" : item[3]})
     return json.dumps(items)
 
+
+# Returns status of trash can
+@app.route('/get-can-status')
+def can_status():
+    status = db.get_can_status()[0]
+
+    json_status = {"lid_status" : status[0], "fan_status" : status[1], "led_status" : status[2], "bulb_status" : status[3]}
+    return json.dumps(json_status)
+
 # Test simple query
 @app.route('/query-test')
 def query_test():
