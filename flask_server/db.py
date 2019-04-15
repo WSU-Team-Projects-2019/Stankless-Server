@@ -61,6 +61,19 @@ def update_can_status(query):
 
     return data
 
+# Delete the given barcode from the database
+def remove_item(barcode):
+    db = getDB()
+    cursor = db.cursor()
+
+    # build query
+    query = 'DELETE FROM barcodes WHERE number = \"{}\"'.format(barcode)
+    cursor.execute(query)
+    db.commit()
+
+    return "Item removed!"
+
+
 # Get database connection
 def getDB():
     # Arguments are: host, username, password, database name
