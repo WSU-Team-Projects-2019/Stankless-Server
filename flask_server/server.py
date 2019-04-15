@@ -94,6 +94,21 @@ def update_status():
         
     return '''Can status updated!\n\nLid : {}\nFan: {}\nLED: {}\nBulb: {}'''.format(lid, fan, led, bulb)
 
+# Delete a barcode from the database
+@app.route('/delete-item')
+def delete_item():
+    # Get barcode to delete
+    barcode = request.args.get('code')
+
+    # If there is no barcode
+    if barcode == None:
+        return "No barcode supplied!"
+
+    response = db.remove_item(barcode)
+
+    return response
+
+
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')
 def barcode_test():
