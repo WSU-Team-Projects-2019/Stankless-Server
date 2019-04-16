@@ -115,6 +115,10 @@ def schedule_job():
     hours = request.args.get('hr')
     mins = request.args.get('min')
 
+    # Make sure we have both minutes and hours
+    if hours == None or mins == None:
+        return "Invalid time entered"
+
     # Time will be given in military time
     if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
         return "Invalid time entered"
@@ -128,6 +132,10 @@ def remove_job():
     # These values should be changed to match UTC mobile app-side
     hours = request.args.get('hr')
     mins = request.args.get('min')
+
+    # Make sure we have both minutes and hours
+    if hours == None or mins == None:
+        return "Invalid time entered"
 
     # Time will be given in military time
     if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
