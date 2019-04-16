@@ -108,6 +108,34 @@ def delete_item():
 
     return response
 
+# Schedule a job
+@app.route('/schedule-job')
+def schedule_job():
+    # These values should be changed to match UTC mobile app-side
+    hours = request.args.get('hr')
+    mins = request.args.get('min')
+
+    # Time will be given in military time
+    if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
+        return "Invalid time entered"
+
+    response = db.insert_job(hours, mins)
+    return response
+
+# Remove a job
+@app.route('/remove-job')
+def remove_job():
+    # These values should be changed to match UTC mobile app-side
+    hours = request.args.get('hr')
+    mins = request.args.get('min')
+
+    # Time will be given in military time
+    if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
+        return "Invalid time entered"
+
+    response = db.remove_job(hours, mins)
+    return response
+
 
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')

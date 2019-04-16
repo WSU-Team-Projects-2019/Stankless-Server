@@ -73,6 +73,13 @@ def remove_item(barcode):
 
     return "Item removed!"
 
+# Add job to the database if there aren't already three
+def insert_job(hours, mins):
+    pass
+
+def remove_job(hours, mins):
+    pass
+
 
 # Get database connection
 def getDB():
