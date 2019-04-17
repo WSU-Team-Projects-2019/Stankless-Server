@@ -112,8 +112,8 @@ def delete_item():
 @app.route('/schedule-job')
 def schedule_job():
     # These values should be changed to match UTC mobile app-side
-    hours = request.args.get('hr')
-    mins = request.args.get('min')
+    hours = int(request.args.get('hr'))
+    mins = int(request.args.get('min'))
 
     # Make sure we have both minutes and hours
     if hours == None or mins == None:
@@ -130,8 +130,8 @@ def schedule_job():
 @app.route('/remove-job')
 def remove_job():
     # These values should be changed to match UTC mobile app-side
-    hours = request.args.get('hr')
-    mins = request.args.get('min')
+    hours = int(request.args.get('hr'))
+    mins = int(request.args.get('min'))
 
     # Make sure we have both minutes and hours
     if hours == None or mins == None:
