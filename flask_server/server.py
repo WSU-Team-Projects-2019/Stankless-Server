@@ -144,6 +144,18 @@ def remove_job():
     response = db.remove_job(hours, mins)
     return response
 
+# Retrieve all jobs from database
+# Not to be confused with Steve
+@app.route('/jobs')
+def jobs():
+    jobs = db.get_jobs()
+
+    # Start of dictionary of jobs
+    job_list = []
+    for job in jobs:
+        job_list.append({'id' : 'default_clean', 'func': 'sch:custom_cycle', 'args': (300), 'trigger' : 'cron', "hour" : job[1], "minute" : job[2]})
+    return json.dumps(job_list)
+
 
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')

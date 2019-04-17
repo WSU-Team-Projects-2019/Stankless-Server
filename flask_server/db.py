@@ -93,6 +93,7 @@ def insert_job(hours, mins):
 
     return "Cleaning Job Scheduled"
 
+# Remove job from the database
 def remove_job(hours, mins):
     db = getDB()
     cursor = db.cursor()
@@ -104,6 +105,14 @@ def remove_job(hours, mins):
 
     return "Cleaning Job Removed"
 
+# Get all jobs from the database
+def get_jobs():
+    db = getDB()
+    cursor = db.cursor()
+    query = "SELECT * FROM jobs;"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
 
 # Get database connection
 def getDB():
