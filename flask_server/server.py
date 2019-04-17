@@ -108,6 +108,54 @@ def delete_item():
 
     return response
 
+# Schedule a job
+@app.route('/schedule-job')
+def schedule_job():
+    # These values should be changed to match UTC mobile app-side
+    hours = int(request.args.get('hr'))
+    mins = int(request.args.get('min'))
+
+    # Make sure we have both minutes and hours
+    if hours == None or mins == None:
+        return "Invalid time entered"
+
+    # Time will be given in military time
+    if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
+        return "Invalid time entered"
+
+    response = db.insert_job(hours, mins)
+    return response
+
+# Remove a job
+@app.route('/remove-job')
+def remove_job():
+    # These values should be changed to match UTC mobile app-side
+    hours = int(request.args.get('hr'))
+    mins = int(request.args.get('min'))
+
+    # Make sure we have both minutes and hours
+    if hours == None or mins == None:
+        return "Invalid time entered"
+
+    # Time will be given in military time
+    if hours < 0 or hours >= 24 or mins < 0 or mins >= 60:
+        return "Invalid time entered"
+
+    response = db.remove_job(hours, mins)
+    return response
+
+# Retrieve all jobs from database
+# Not to be confused with Steve
+@app.route('/jobs')
+def jobs():
+    jobs = db.get_jobs()
+
+    # Start of dictionary of jobs
+    job_list = []
+    for job in jobs:
+        job_list.append({'id' : 'default_clean', 'func': 'sch:custom_cycle', 'args': (300), 'trigger' : 'cron', "hour" : job[1], "minute" : job[2]})
+    return json.dumps(job_list)
+
 
 # Test requesting barcode data from upcitemdb
 @app.route('/barcode-test')

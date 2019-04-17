@@ -73,6 +73,46 @@ def remove_item(barcode):
 
     return "Item removed!"
 
+# Add job to the database if there aren't already three
+def insert_job(hours, mins):
+    db = getDB()
+    cursor = db.cursor()
+
+    # check to see if the item already exists in the database
+    query = "SELECT job_id FROM jobs WHERE hour = {} AND minute = {};".format(hours, mins)
+    cursor.execute(query)
+    # Fetch a single row and check if it is equal to None
+    data = cursor.fetchone()
+    if data != None: # If barcode already exists in the database
+        return "This cleaning cycle is already scheduled!"
+
+    # build query
+    query = "INSERT INTO jobs (hour, minute) VALUES ({}, {});".format(hours, mins)
+    cursor.execute(query)
+    db.commit()
+
+    return "Cleaning Job Scheduled"
+
+# Remove job from the database
+def remove_job(hours, mins):
+    db = getDB()
+    cursor = db.cursor()
+
+    # build query
+    query = 'DELETE FROM jobs WHERE hour = {} AND minute = {};'.format(hours, mins)
+    cursor.execute(query)
+    db.commit()
+
+    return "Cleaning Job Removed"
+
+# Get all jobs from the database
+def get_jobs():
+    db = getDB()
+    cursor = db.cursor()
+    query = "SELECT * FROM jobs;"
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return data
 
 # Get database connection
 def getDB():
