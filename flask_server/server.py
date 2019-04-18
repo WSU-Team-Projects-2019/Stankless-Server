@@ -153,7 +153,7 @@ def jobs():
     # Start of dictionary of jobs
     job_list = []
     for job in jobs:
-        job_list.append({'id' : 'default_clean', 'func': 'sch:custom_cycle', 'args': (300), 'trigger' : 'cron', "hour" : job[1], "minute" : job[2]})
+        job_list.append({'id' : 'default_clean', 'func': 'sch:custom_cycle', 'args': [300], 'trigger' : 'cron', "hour" : job[1], "minute" : job[2]})
     return json.dumps(job_list)
 
 
